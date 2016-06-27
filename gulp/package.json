@@ -1,0 +1,19 @@
+{
+  "name": "frontend",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "bootstrap-sass": "latest"
+  },
+  "devDependencies": {
+    "jquery": "latest",
+    "gulp": "latest",
+    "watchify": "latest",
+    "browserify": "latest",
+    "gulp-clean-css": "latest",
+    "gulp-sass": "latest",
+    "gulp-concat": "latest",
+    "gulp-watch": "latest",
+    "gulp-gzip": "latest",
+    "vinyl-source-stream": "latest"
+  }
+}

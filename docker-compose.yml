@@ -1,0 +1,80 @@
+django:
+  restart: always
+  build: ./django
+  expose:
+    - "8000"
+  links:
+    - postgres:postgres
+    - redis:redis
+  volumes:
+    - ./django:/opt/django
+    - ./django/static:/opt/django/static
+  env_file: .env
+  environment:
+    DEBUG: 'true'
+  command: /usr/local/bin/gunicorn src.wsgi:application -w 2 -b :8000
+
+gulp:
+  build: ./gulp
+  command: bash -c "sleep 3 && gulp"
+  volumes:
+    - ./gulp/src:/opt/gulp/src
+    - ./django/static:/opt/gulp/build
+  links:
+    - django
+
+nginx:
+  restart: always
+  build: ./nginx/
+  ports:
+    - "80:80"
+  volumes:
+    - /www/static
+  volumes_from:
+    - django
+  links:
+    - django:django
+
+postgres:
+  restart: always
+  image: postgres:latest
+  ports:
+    - "5432:5432"
+  volumes:
+    - pgdata:/var/lib/postgresql/data/
+
+redis:
+  restart: always
+  image: redis:latest
+  ports:
+    - "6379:6379"
+  volumes:
+    - redisdata:/data
+
+celery:
+  restart: always
+  build: ./django
+  env_file: .env
+  environment:
+    - C_FORCE_ROOT=true
+    - DATABASE_HOST=postgresql
+    - CELERY_BROKER_URL=redis://redis:6379/0
+  command: bash -c "celery worker -B -E -l INFO -n worker.high -Q high --app=src &
+                    celery worker -B -E -l INFO -n worker.normal -Q normal --app=src &
+                    celery worker -B -E -l INFO -n worker.low -Q low --app=src"
+  volumes:
+    - ./django:/opt/project
+    - /opt/project/static
+  links:
+    - postgres:db
+    - redis:redis
+
+flower:
+    image: placr/flower:latest
+    restart: always
+    ports:
+        - "5555:5555"
+    links:
+        - redis:redis
+    command: flower --broker=redis://redis:6379/0
+

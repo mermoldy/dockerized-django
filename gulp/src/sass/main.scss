@@ -1,0 +1,46 @@
+@import "bootstrap";
+@import "bootstrap/theme";
+
+
+body {
+    background: url('img/background.png') center center;
+}
+
+.container {
+    max-width: 900px;
+
+    #mascots {
+        display: flex;
+        justify-content: space-between;
+        align: center;
+        width: 80%;
+        height: auto;
+        margin: 60px auto auto;
+
+        .mascot {
+            display: inline-block;
+            width: 50%;
+            height: auto;
+
+            img {
+                width: 100%;
+            }
+        }
+    }
+
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    #items {
+        max-height: 600px;
+        max-width: 600px;
+        margin: 0 auto 60px;
+        overflow-y: auto;
+
+        .item {
+            margin: 10px;
+        }
+    }
+}
