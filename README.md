@@ -6,11 +6,11 @@
 - fabric
 
 
-### Instructions
+### Run locally
 
 1. Build images - `docker-compose build`
 1. Start services - `docker-compose up -d`
-1. Create migrations - `docker-compose run web /usr/local/bin/python manage.py migrate`
+1. Go to shell - `docker-compose run django bash`
 
 
 ### Deploy

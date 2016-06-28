@@ -28,6 +28,7 @@ celerybeat-schedule
 **/CACHE/
 .idea/
 **/static/bundle.*
+**/static/admin/
 
 # JS
 **/node_modules/
